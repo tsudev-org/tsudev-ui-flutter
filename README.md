@@ -107,9 +107,29 @@ else if (res.statusCode == 402) { /* pro_required: hiện màn Pro, không thử
 flutter pub get
 dart format --output=none --set-exit-if-changed lib test
 flutter analyze --fatal-infos
-flutter test                    # 69 test, gồm golden Sáng/Tối và khổ hẹp/rộng
+flutter test                    # 125 test, gồm golden Sáng/Tối, khổ hẹp/rộng và fuzz bộ kiểm JWS
 ```
 
 Golden chỉ khớp trên Linux với đúng Flutter ghim trong CI (`3.47.8`); phông Roboto lấy từ Flutter SDK lúc test.
 Quyết định thiết kế: [`docs/adr/0001-thu-vien-dung-chung-quyen-loi-huy-hieu.md`](docs/adr/0001-thu-vien-dung-chung-quyen-loi-huy-hieu.md).
-Báo lỗ hổng: [`SECURITY.md`](SECURITY.md).
+Báo lỗ hổng: [`SECURITY.md`](SECURITY.md). Đóng góp: [`CONTRIBUTING.md`](CONTRIBUTING.md). Hồ sơ OpenSSF Best
+Practices: [`docs/best-practices.json`](docs/best-practices.json).
+
+## English summary
+
+`tsudev_ui` is the shared Flutter package of the TsuDEV apps (AGPL-3.0-only). It provides:
+
+- **Badges** (`TsuBadge`, `TsuNameWithBadge`): Pro / Supporter badges next to a user name, light/dark, reduced-motion
+  aware, with screen reader labels in Vietnamese and English.
+- **Pro notices** (`ProNotice*`, `ProRenewal*`): the "several devices without Pro" dialog and the Pro renewal /
+  expiry reminders, with the exact policy texts in Vietnamese and English.
+- **Entitlements** (`EntitlementVerifier`, `EntitlementsRepository`): verifies the ES256-signed entitlement JWS from
+  tsudev.com against its JWKS (`iss`, `aud`, `exp`, `typ`, `cnf.jkt`), caches it for at most 7 days and falls back
+  to the free tier on any error; `jwsForServer()` for sync servers.
+- **DPoP** (`DpopSigner`, RFC 9449 / RFC 7638) with a per-installation P-256 key, and a random 128-bit
+  **installation id**.
+
+Install by pinning a git tag in the app's `pubspec.yaml` (see *Cài* above). Build and test with `flutter pub get`,
+`flutter analyze --fatal-infos` and `flutter test`; details in [CONTRIBUTING.md](CONTRIBUTING.md). Report
+vulnerabilities privately as described in [SECURITY.md](SECURITY.md). Changes are listed in
+[CHANGELOG.md](CHANGELOG.md).

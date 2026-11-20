@@ -2,6 +2,15 @@
 
 Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/) và SemVer.
 
+## [Chưa phát hành]
+
+### Thêm
+
+- Test fuzz đột biến cho `EntitlementVerifier` (seed cố định, `--dart-define=FUZZ_SEED`): chuỗi JWS bị sửa, claim và
+  header ngẫu nhiên có chữ ký hợp lệ chỉ được nhận đúng bản gốc hoặc ném `EntitlementException`.
+- `CONTRIBUTING.md` (tiếng Anh), tóm tắt tiếng Anh trong README và SECURITY, hồ sơ OpenSSF Best Practices
+  `docs/best-practices.json`.
+
 ## [0.2.0] - 20/11/2026
 
 Bộ quy ước **v4.0.0** (PRODUCT_POLICY v1.2.0: Pro 1 năm không tự gia hạn, mục 7.6, kênh trạng thái).
