@@ -1,6 +1,6 @@
 # OpenSSF Best Practices - tsudev_ui
 
-Hồ sơ mức **passing** trên [bestpractices.dev](https://www.bestpractices.dev/). Nguồn sự thật: [`best-practices.json`](best-practices.json) (công cụ `bp.cjs` điền biểu mẫu từ tệp này). Mỗi câu `Met` có bằng chứng trên `main`; sửa repo thì cập nhật cả hai tệp.
+Hồ sơ [16948](https://www.bestpractices.dev/projects/16948) - mức **passing** (100%, nộp 20/11/2026) trên [bestpractices.dev](https://www.bestpractices.dev/). Nguồn sự thật: [`best-practices.json`](best-practices.json) (công cụ `bp.cjs` điền biểu mẫu từ tệp này). Mỗi câu `Met` có bằng chứng trên `main`; sửa repo thì cập nhật cả hai tệp.
 
 Tổng: 63 Met, 3 N/A, 1 Unmet.
 
