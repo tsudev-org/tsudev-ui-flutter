@@ -1,0 +1,25 @@
+name: tsudev_ui
+description: >-
+  Thành phần giao diện và quyền lợi dùng chung của hệ TsuDEV cho Flutter: huy hiệu Pro/Ủng hộ (TsuBadge),
+  thông báo "nhiều thiết bị chưa có Pro" (ProNotice), kiểm JWS quyền lợi ES256 + JWKS và mã cài đặt 128 bit.
+version: 0.1.0
+repository: https://github.com/tsudev-org/tsudev-ui-flutter
+issue_tracker: https://github.com/tsudev-org/tsudev-ui-flutter/issues
+publish_to: none
+
+environment:
+  sdk: ^3.13.0
+  flutter: '>=3.47.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.6.0
+  pointycastle: ^4.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  flutter_lints: ^6.0.0

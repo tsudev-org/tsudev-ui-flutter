@@ -1,0 +1,16 @@
+tsudev-ui-flutter (gói Dart tsudev_ui)
+Copyright (C) 2026 tsudev
+
+This program is free software: you can redistribute it and/or modify it under the terms of the
+GNU Affero General Public License version 3 as published by the Free Software Foundation (AGPL-3.0-only).
+See the LICENSE file.
+
+The name "tsudev" / "TsuDEV" and its logos are not licensed under the AGPL and may not be used to endorse or
+promote derived products without prior written permission.
+
+Badge colours and shapes are redrawn from tsudev-org/tsudev-standards assets/badges/ (same licence).
+
+Dependencies (fetched by pub, not bundled in this repository):
+- pointycastle (MIT, Copyright the Bouncy Castle / PointyCastle authors)
+- http (BSD-3-Clause, Copyright the Dart project authors)
+Test-only: Roboto font is read from the Flutter SDK at test time (Apache License 2.0); it is not committed here.
