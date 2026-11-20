@@ -7,6 +7,8 @@
 
 - [ ] Repo sản phẩm (qulythuchi, tsuscan, sound-db, app-la-ban, lotus-share) chuyển sang `tsudev_ui` ở PR PRO1 đầu tiên
   của mỗi repo (phiếu con PRO1 mục 6) - việc của phiên từng repo, không làm ở đây.
+- [ ] Repo sản phẩm nâng `ref: v0.2.0` và gắn `maybeShowProRenewal` (7.6), `jwsForServer`/DPoP khi có đồng bộ - việc
+  của phiên từng repo.
 
 ## Đang thực hiện
 
@@ -15,6 +17,8 @@
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
+- 20/11/2026 - v0.2.0: ProRenewal (7.6, 6 ca bắt buộc + golden), `jwsForServer()`/401 stale, DPoP P-256 (RFC
+  9449/7638), `cnf.jkt`, bộ quy ước v4.0.0 (phase PRO2-UI của phiên điều phối).
 - 20/11/2026 - v0.1.0: TsuBadge, ProNotice (5 ca bắt buộc), kiểm JWS ES256 + JWKS, mã cài đặt 128 bit; CI xanh
   (phase PRO-C2 của phiên điều phối).
 

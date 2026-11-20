@@ -29,6 +29,7 @@ class Entitlement {
     required this.donor,
     required this.badge,
     required this.devices30d,
+    this.confirmationJkt,
   });
 
   final String subject;
@@ -46,6 +47,10 @@ class Entitlement {
 
   /// Số mã cài đặt có hoạt động trong 30 ngày (PRODUCT_POLICY 7.3).
   final int devices30d;
+
+  /// `cnf.jkt` (RFC 7638 thumbprint khoá DPoP, PRODUCT_POLICY 7.4) nếu JWS đã
+  /// gắn khoá thiết bị. Có giá trị ⇒ máy chủ nhận JWS đòi `Authorization: DPoP`.
+  final String? confirmationJkt;
 
   /// Pro còn hạn khi `pro_until` > giờ hiện tại.
   bool isProActive(DateTime now) =>

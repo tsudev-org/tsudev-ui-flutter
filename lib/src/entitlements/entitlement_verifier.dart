@@ -102,6 +102,14 @@ class EntitlementVerifier {
     if (devices is! int || devices < 0) {
       _fail(EntitlementError.invalidClaims, 'devices_30d');
     }
+    final cnf = c['cnf'];
+    if (cnf != null && cnf is! Map) {
+      _fail(EntitlementError.invalidClaims, 'cnf');
+    }
+    final jkt = (cnf as Map?)?['jkt'];
+    if (jkt != null && (jkt is! String || jkt.length != 43)) {
+      _fail(EntitlementError.invalidClaims, 'cnf.jkt');
+    }
 
     return Entitlement(
       subject: sub,
@@ -113,6 +121,7 @@ class EntitlementVerifier {
       donor: donor,
       badge: TsuBadgeKind.parse(c['badge']),
       devices30d: devices,
+      confirmationJkt: jkt as String?,
     );
   }
 

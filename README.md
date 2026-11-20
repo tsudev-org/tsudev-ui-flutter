@@ -7,10 +7,12 @@ app-la-ban, lotus-share) dùng đúng một bản:
 | --- | --- | --- |
 | `TsuBadge`, `TsuNameWithBadge` | PRODUCT_POLICY 4.2, `assets/badges/` | Huy hiệu Pro / Ủng hộ cạnh tên: 0,75 × dòng (16-20 px), shimmer 7 giây, tim đập khi rê/chạm, tắt khi Giảm chuyển động, nhãn đọc màn hình vi/en |
 | `ProNotice*`, `maybeShowProNotice` | PRODUCT_POLICY 7.3 | Hộp thoại "nhiều thiết bị chưa có Pro": chữ nguyên văn vi/en, chu kỳ 30 ngày ở `tsu.pro_notice.last_shown` |
-| `EntitlementVerifier`, `EntitlementsRepository`, `DiscoveryJwks`, `TsudevEntitlementsApi` | PRODUCT_POLICY 7.4 | Kiểm JWS quyền lợi ES256 bằng JWKS (`iss`, `aud`, `exp`, `typ`), đệm ≤ 7 ngày, hết hạn ⇒ miễn phí |
+| `ProRenewal*`, `maybeShowProRenewal` | PRODUCT_POLICY 7.6 | Nhắc gia hạn 7 ngày cuối (mỗi lần mở app) + báo hết kỳ một lần mỗi `pro_until`: chữ nguyên văn vi/en |
+| `EntitlementVerifier`, `EntitlementsRepository`, `DiscoveryJwks`, `TsudevEntitlementsApi` | PRODUCT_POLICY 7.4 | Kiểm JWS quyền lợi ES256 bằng JWKS (`iss`, `aud`, `exp`, `typ`, `cnf.jkt`), đệm ≤ 7 ngày, hết hạn ⇒ miễn phí; `jwsForServer()` cho máy chủ đồng bộ (`iat` ≤ 24 giờ, thử lại khi `401 stale`) |
+| `DpopSigner`, `DpopKey`, `SoftwareDpopKey` | PRODUCT_POLICY 7.4, RFC 9449/7638 | Bằng chứng DPoP bằng khoá P-256 riêng mỗi cài đặt; thumbprint `cnf.jkt` |
 | `InstallationId` | AUTH_AND_ACCOUNT 14.3 | Mã cài đặt ngẫu nhiên 128 bit, base64url 22 ký tự, header `X-Tsu-Installation` |
 
-Giấy phép: **AGPL-3.0-only** (như bộ hệ TsuDEV). Bộ quy ước: `.standards-version` (v3.9.1).
+Giấy phép: **AGPL-3.0-only** (như bộ hệ TsuDEV). Bộ quy ước: `.standards-version` (v4.0.0).
 
 ## Cài
 
@@ -21,7 +23,7 @@ dependencies:
   tsudev_ui:
     git:
       url: https://github.com/tsudev-org/tsudev-ui-flutter.git
-      ref: v0.1.0
+      ref: v0.2.0
 ```
 
 ## Dùng
@@ -61,11 +63,43 @@ await maybeShowProNotice(
   onSeePro: () => isPlayBuild ? startPlayBilling() : launchUrl(proWebUrl('qulythuchi-app')),
   onBackupToFile: openBackupToFile,
 );
+
+// 5. Nhắc gia hạn / báo hết kỳ (7.6): MỘT controller cho cả tiến trình, nối vòng đời app.
+final renewal = ProRenewalController(store: store);
+final lifecycle = AppLifecycleListener(onStateChange: renewal.handleAppLifecycleState);
+// Mỗi lần mở app / quay lại (sau khi refresh quyền lợi):
+await maybeShowProRenewal(
+  context,
+  controller: renewal,
+  state: state,
+  onRenew: () => isPlayBuild ? startPlayBilling('tsudev_pro', 'nam') : launchUrl(proWebUrl('qulythuchi-app')),
+  hasCloudSync: true,                                 // app không có đồng bộ đám mây ⇒ false (bỏ câu cuối)
+);
+```
+
+### DPoP và JWS cho máy chủ đồng bộ
+
+```dart
+// Khoá P-256 của cài đặt này. Tốt nhất: cài DpopKey bằng kho khoá phần cứng (Keystore/Secure Enclave);
+// dự phòng: SoftwareDpopKey lưu trong kho BÍ MẬT của hệ điều hành (không phải shared_preferences).
+final dpop = DpopSigner(await SoftwareDpopKey.getOrCreate(secureStore));
+final api = TsudevEntitlementsApi(client: client, accessToken: ..., installationId: ..., dpop: dpop);
+final repo = EntitlementsRepository(verifier: ..., store: store, fetchJws: api.fetch, dpop: dpop);
+
+// Gọi TsuDEV Sync / máy chủ sản phẩm nhận JWS làm thẻ: JWS > 23 giờ tự lấy mới; 401 stale ⇒ lấy mới, thử lại 1 lần.
+final url = Uri.parse('https://sync.tsudev.com/v1/list');
+final res = await repo.sendWithServerJws(
+  (jws) async => client.get(url, headers: await repo.serverAuthHeaders(jws, 'GET', url)),
+);
+if (res == null) { /* chưa có JWS dùng được: hoãn đồng bộ */ }
+else if (res.statusCode == 402) { /* pro_required: hiện màn Pro, không thử lại */ }
 ```
 
 - Bản Google Play: `onSeePro` `MUST` mở Play Billing, `MUST NOT` mở trang thanh toán web (PRODUCT_POLICY 4.3).
 - Đăng xuất và xoá dữ liệu cục bộ: `repo.clear()` + `InstallationId.clear(store)`.
-- Khoá lưu cục bộ: `tsu.installation_id`, `tsu.entitlements.jws`, `tsu.entitlements.jwks`, `tsu.pro_notice.last_shown`.
+- Khoá lưu cục bộ: `tsu.installation_id`, `tsu.entitlements.jws`, `tsu.entitlements.jwks`, `tsu.pro_notice.last_shown`,
+  `tsu.pro_expired.notified_until` (7.6), `tsu.pro_renewal.seen_pro_until` (nội bộ: thiết bị từng thấy Pro còn hạn);
+  kho bí mật: `tsu.dpop.key` (chỉ khi dùng `SoftwareDpopKey`).
 
 ## Phát triển
 
