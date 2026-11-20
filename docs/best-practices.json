@@ -1,6 +1,7 @@
 {
  "fields": {
   "name": "tsudev_ui (tsudev-ui-flutter)",
+  "description": "Shared Flutter package of the TsuDEV apps: Pro/Supporter badges, Pro notices, ES256 entitlement JWS + JWKS verification, DPoP and installation id (AGPL-3.0).",
   "homepage_url": "https://github.com/tsudev-org/tsudev-ui-flutter"
  },
  "criteria": {

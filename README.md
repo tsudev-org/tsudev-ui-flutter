@@ -1,5 +1,8 @@
 # tsudev-ui-flutter - gói `tsudev_ui`
 
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/16948/badge)](https://www.bestpractices.dev/projects/16948)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/tsudev-org/tsudev-ui-flutter/badge)](https://scorecard.dev/viewer/?uri=github.com/tsudev-org/tsudev-ui-flutter)
+
 Thành phần dùng chung của hệ TsuDEV cho Flutter, viết một lần để mọi app Flutter (qulythuchi, tsuscan, sound-db,
 app-la-ban, lotus-share) dùng đúng một bản:
 
