@@ -49,8 +49,41 @@ void main() {
     home: Scaffold(body: ProNoticeDialog(devices: 2, locale: l)),
   );
 
+  // Giữa trưa UTC ⇒ ngày theo giờ máy giống nhau ở mọi múi giờ ±11 giờ.
+  final until = DateTime.utc(2026, 11, 26, 12);
+  final renewals = {
+    'nhac': ProRenewalDecision.reminder(proUntil: until, daysLeft: 7),
+    'het_ky': ProRenewalDecision.expired(proUntil: until),
+  };
+
+  Widget renewal(Brightness b, ProRenewalDecision d) => MaterialApp(
+    debugShowCheckedModeBanner: false,
+    theme: ThemeData(brightness: b, fontFamily: 'Roboto'),
+    home: Scaffold(
+      body: ProRenewalDialog(decision: d, locale: const Locale('vi')),
+    ),
+  );
+
   for (final b in Brightness.values) {
     final name = b == Brightness.light ? 'sang' : 'toi';
+
+    for (final MapEntry(key: kind, value: d) in renewals.entries) {
+      for (final (label, size) in [
+        ('hep', const Size(360, 640)),
+        ('rong', const Size(1024, 640)),
+      ]) {
+        testWidgets('ProRenewal $kind - $name - $label', (tester) async {
+          tester.view.physicalSize = size;
+          tester.view.devicePixelRatio = 1;
+          addTearDown(tester.view.reset);
+          await tester.pumpWidget(renewal(b, d));
+          await expectLater(
+            find.byType(Scaffold),
+            matchesGoldenFile('goldens/pro_renewal_${kind}_${name}_$label.png'),
+          );
+        });
+      }
+    }
 
     testWidgets('huy hiệu - $name', (tester) async {
       tester.view.physicalSize = const Size(420, 520);

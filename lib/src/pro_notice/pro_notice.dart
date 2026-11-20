@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../entitlements/entitlements_repository.dart';
 import '../storage/key_value_store.dart';
 
-/// Nội dung NGUYÊN VĂN của PRODUCT_POLICY 7.3 (v1.1.1, bộ quy ước v3.9.1).
+/// Nội dung NGUYÊN VĂN của PRODUCT_POLICY 7.3 (không đổi tới v1.2.0, bộ quy ước v4.0.0).
 /// KHÔNG sửa chữ ở đây - đổi ở bộ quy ước trước rồi đồng bộ lại.
 class ProNoticeStrings {
   const ProNoticeStrings._({

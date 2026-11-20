@@ -59,6 +59,7 @@ flutter test --update-goldens test/golden_test.dart   # khi đổi giao diện c
 | --- | --- |
 | `lib/src/badge/` | phiên điều phối (đổi thiết kế: sửa SVG ở tsudev-standards TRƯỚC) |
 | `lib/src/pro_notice/` | phiên điều phối (chữ NGUYÊN VĂN PRODUCT_POLICY 7.3 - test đối chiếu tự động) |
+| `lib/src/pro_renewal/` | phiên điều phối (chữ NGUYÊN VĂN PRODUCT_POLICY 7.6 - test đối chiếu tự động) |
 | `lib/src/entitlements/`, `lib/src/installation/` | phiên điều phối (hợp đồng PRODUCT_POLICY 7.4, AUTH_AND_ACCOUNT 14.3) |
 
 ### B.4. Điểm lệch chuẩn đã biết
