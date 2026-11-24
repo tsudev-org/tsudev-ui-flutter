@@ -3,7 +3,7 @@ description: >-
   Thành phần giao diện và quyền lợi dùng chung của hệ TsuDEV cho Flutter: huy hiệu Pro/Ủng hộ (TsuBadge),
   thông báo "nhiều thiết bị chưa có Pro" (ProNotice), nhắc gia hạn/báo hết kỳ Pro (ProRenewal), kiểm JWS
   quyền lợi ES256 + JWKS, DPoP và mã cài đặt 128 bit.
-version: 0.3.0
+version: 0.4.0
 repository: https://github.com/tsudev-org/tsudev-ui-flutter
 issue_tracker: https://github.com/tsudev-org/tsudev-ui-flutter/issues
 publish_to: none

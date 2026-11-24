@@ -4,6 +4,17 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/) và SemVer.
 
 ## [Chưa phát hành]
 
+## [0.4.0] - 24/11/2026
+
+### Thêm
+
+- `TsuSignInScreen` + `TsuSignInOption` + `TsuSignInStrings` (vi/en): màn đăng nhập/đăng ký/Ủng hộ thống nhất theo
+  AUTH_AND_ACCOUNT 13.2 (mẫu Quly Thu Chi + Lark) - lối vào lấy từ app (không gõ cứng nhà cung cấp), nhãn "Lần trước
+  bạn dùng cách này", ô đồng ý Điều khoản KHÔNG tích sẵn + bảng "Đồng ý và tiếp tục" (13.4), dải "Thêm tuỳ chọn đăng
+  nhập", "Quét để đăng nhập", chế độ khách không bắt tích ô.
+- `TsuXdLink.parse` (CROSS_DEVICE_LOGIN v1.1.0 T9): chỉ nhận `https://tsudev.com/x/<id>?f=k|d#<bí mật>`; app mở chính
+  URL đó trong trình duyệt hệ thống để đăng nhập bằng QR (Đ1), rồi đăng nhập OIDC như thường - SSO trả mã ngay.
+
 ## [0.3.0] - 24/11/2026
 
 ### Thêm

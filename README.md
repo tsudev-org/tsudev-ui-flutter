@@ -26,7 +26,7 @@ dependencies:
   tsudev_ui:
     git:
       url: https://github.com/tsudev-org/tsudev-ui-flutter.git
-      ref: v0.3.0
+      ref: v0.4.0
 ```
 
 ## Dùng
@@ -103,6 +103,27 @@ else if (res.statusCode == 402) { /* pro_required: hiện màn Pro, không thử
 - Khoá lưu cục bộ: `tsu.installation_id`, `tsu.entitlements.jws`, `tsu.entitlements.jwks`, `tsu.pro_notice.last_shown`,
   `tsu.pro_expired.notified_until` (7.6), `tsu.pro_renewal.seen_pro_until` (nội bộ: thiết bị từng thấy Pro còn hạn);
   kho bí mật: `tsu.dpop.key` (chỉ khi dùng `SoftwareDpopKey`).
+
+### Màn đăng nhập thống nhất + quét QR (từ v0.4.0)
+
+```dart
+TsuSignInScreen(
+  logo: Image.asset('assets/brand/logo.png'),
+  title: 'Chào mừng tới Quly Thu Chi',
+  tagline: 'Dữ liệu được mã hoá ngay trên thiết bị.',
+  primary: [googleOption, githubOption, tsudevEmailOption], // chỉ lối vào IdP đang bật
+  more: [passkeyOption],
+  lastUsedId: prefs.lastSignIn,
+  onScanToSignIn: () async {
+    final link = TsuXdLink.parse(await scanQr()); // null ⇒ "Mã QR này không phải của tsudev."
+    if (link != null) await openInSystemBrowser(link.uri); // rồi bắt đầu đăng nhập OIDC như thường
+  },
+  guestLabel: 'Dùng ngay, không cần tài khoản',
+  onGuest: startGuest,
+  onOpenTerms: () => launch('https://tsudev.com/terms'),
+  onOpenPrivacy: () => launch('https://tsudev.com/privacy'),
+);
+```
 
 ### Thanh điều hướng không bị biểu tượng trắng (từ v0.3.0)
 
