@@ -12,6 +12,7 @@ export 'src/installation/installation_id.dart';
 export 'src/pro_notice/pro_notice.dart';
 export 'src/pro_renewal/pro_renewal.dart';
 export 'src/sign_in/tsu_sign_in_screen.dart';
+export 'src/sign_in/tsu_xd_approver.dart';
 export 'src/sign_in/tsu_xd_link.dart';
 export 'src/storage/key_value_store.dart';
 export 'src/theme/tsu_nav_theme.dart';

@@ -26,7 +26,7 @@ dependencies:
   tsudev_ui:
     git:
       url: https://github.com/tsudev-org/tsudev-ui-flutter.git
-      ref: v0.4.0
+      ref: v0.5.0
 ```
 
 ## Dùng
@@ -124,6 +124,25 @@ TsuSignInScreen(
   onOpenPrivacy: () => launch('https://tsudev.com/privacy'),
 );
 ```
+
+### Xác nhận đăng nhập máy khác bằng QR - vai xác nhận Đ2 (từ v0.5.0)
+
+App ĐÃ đăng nhập quét QR ở màn đăng nhập tsudev.com trên máy tính. Client OIDC của app cần scope `tsudev.xd` (xin IdP
+cấp - phiếu điều phối) và app xin scope đó lúc đăng nhập.
+
+```dart
+final link = TsuXdLink.parse(await scanQr());
+if (link == null) return showError('Mã QR này không phải của tsudev.');
+if (link.flow == TsuXdFlow.push) return openInSystemBrowser(link.uri); // Đ1: app là thiết bị mới
+Navigator.push(context, MaterialPageRoute(builder: (_) => TsuXdApproveScreen(
+  link: link,
+  approver: TsuXdApprover(accessToken: auth.freshAccessToken), // scope tsudev.xd
+  unlock: () => appLock.authenticate(reason: 'Xác nhận đăng nhập máy khác'), // BẮT BUỘC (T8)
+)));
+```
+
+`unlock` trả `true` chỉ khi người dùng mở khoá được (vd. `local_auth` hay khoá ứng dụng sẵn có). Gói không tự kéo
+`local_auth`.
 
 ### Thanh điều hướng không bị biểu tượng trắng (từ v0.3.0)
 
