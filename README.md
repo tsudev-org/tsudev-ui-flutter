@@ -26,7 +26,7 @@ dependencies:
   tsudev_ui:
     git:
       url: https://github.com/tsudev-org/tsudev-ui-flutter.git
-      ref: v0.2.0
+      ref: v0.3.0
 ```
 
 ## Dùng
@@ -103,6 +103,24 @@ else if (res.statusCode == 402) { /* pro_required: hiện màn Pro, không thử
 - Khoá lưu cục bộ: `tsu.installation_id`, `tsu.entitlements.jws`, `tsu.entitlements.jwks`, `tsu.pro_notice.last_shown`,
   `tsu.pro_expired.notified_until` (7.6), `tsu.pro_renewal.seen_pro_until` (nội bộ: thiết bị từng thấy Pro còn hạn);
   kho bí mật: `tsu.dpop.key` (chỉ khi dùng `SoftwareDpopKey`).
+
+### Thanh điều hướng không bị biểu tượng trắng (từ v0.3.0)
+
+```dart
+final nav = TsuNavColors(
+  background: p.bgSurface,
+  indicator: p.primary.withValues(alpha: 0.14),
+  selected: p.primary,
+  unselected: p.iconNav,
+  selectedLabel: p.textPrimary,
+  unselectedLabel: p.textSecondary,
+); // ném ArgumentError nếu biểu tượng/nền < 3:1
+ThemeData(
+  colorScheme: tsuCompleteContainers(scheme, accent: p.primary, surface: p.bgSurface, onSurface: p.textPrimary),
+  navigationBarTheme: tsuNavigationBarTheme(nav),
+  navigationRailTheme: tsuNavigationRailTheme(nav),
+);
+```
 
 ## Phát triển
 

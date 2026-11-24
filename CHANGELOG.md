@@ -4,6 +4,15 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/) và SemVer.
 
 ## [Chưa phát hành]
 
+## [0.3.0] - 24/11/2026
+
+### Thêm
+
+- `TsuNavColors`, `tsuNavigationBarTheme`, `tsuNavigationRailTheme`, `tsuCompleteContainers`, `tsuContrast`
+  (phiếu `20261124-UI1`, DESIGN_SYSTEM 4.1.0): theme thanh điều hướng ghi đè biểu tượng + nhãn theo `WidgetState`,
+  khai đủ cặp `*Container`; `TsuNavColors` ném lỗi khi biểu tượng/nền dưới 3:1. Sửa gốc lỗi biểu tượng trắng trên viên
+  chỉ báo nhạt (Sound Db, Quly Thu Chi). Test đo tương phản tại `IconTheme` của biểu tượng thật, đã kiểm đột biến.
+
 ### Thêm
 
 - Test fuzz đột biến cho `EntitlementVerifier` (seed cố định, `--dart-define=FUZZ_SEED`): chuỗi JWS bị sửa, claim và

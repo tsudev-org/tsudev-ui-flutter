@@ -12,3 +12,4 @@ export 'src/installation/installation_id.dart';
 export 'src/pro_notice/pro_notice.dart';
 export 'src/pro_renewal/pro_renewal.dart';
 export 'src/storage/key_value_store.dart';
+export 'src/theme/tsu_nav_theme.dart';
