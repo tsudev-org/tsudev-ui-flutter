@@ -44,37 +44,44 @@ void main() {
   for (final dark in [false, true]) {
     final mode = dark ? 'Tối' : 'Sáng';
 
-    testWidgets('NavigationBar - biểu tượng đang chọn và chưa chọn ≥ 3:1 ($mode)', (tester) async {
-      final c = colors(dark: dark);
-      await tester.pumpWidget(
-        MaterialApp(
-          theme: theme(dark: dark),
-          home: Scaffold(
-            bottomNavigationBar: NavigationBar(
-              selectedIndex: 0,
-              destinations: const [
-                NavigationDestination(
-                  icon: Icon(Icons.home_outlined, key: Key('chon')),
-                  label: 'Tổng quan',
-                ),
-                NavigationDestination(
-                  icon: Icon(Icons.history, key: Key('chua')),
-                  label: 'Lịch sử',
-                ),
-              ],
+    testWidgets(
+      'NavigationBar - biểu tượng đang chọn và chưa chọn ≥ 3:1 ($mode)',
+      (tester) async {
+        final c = colors(dark: dark);
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: theme(dark: dark),
+            home: Scaffold(
+              bottomNavigationBar: NavigationBar(
+                selectedIndex: 0,
+                destinations: const [
+                  NavigationDestination(
+                    icon: Icon(Icons.home_outlined, key: Key('chon')),
+                    label: 'Tổng quan',
+                  ),
+                  NavigationDestination(
+                    icon: Icon(Icons.history, key: Key('chua')),
+                    label: 'Lịch sử',
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      );
-      await tester.pumpAndSettle();
-      final pill = Color.alphaBlend(c.indicator, c.background);
-      final on = IconTheme.of(tester.element(find.byKey(const Key('chon')))).color!;
-      final off = IconTheme.of(tester.element(find.byKey(const Key('chua')))).color!;
-      expect(tsuContrast(on, pill), greaterThanOrEqualTo(3));
-      expect(tsuContrast(off, c.background), greaterThanOrEqualTo(3));
-    });
+        );
+        await tester.pumpAndSettle();
+        final pill = Color.alphaBlend(c.indicator, c.background);
+        final on = IconTheme.of(tester.element(find.byKey(const Key('chon'))))
+            .color!;
+        final off = IconTheme.of(tester.element(find.byKey(const Key('chua'))))
+            .color!;
+        expect(tsuContrast(on, pill), greaterThanOrEqualTo(3));
+        expect(tsuContrast(off, c.background), greaterThanOrEqualTo(3));
+      },
+    );
 
-    testWidgets('NavigationRail - biểu tượng đang chọn ≥ 3:1 ($mode)', (tester) async {
+    testWidgets('NavigationRail - biểu tượng đang chọn ≥ 3:1 ($mode)', (
+      tester,
+    ) async {
       final c = colors(dark: dark);
       await tester.pumpWidget(
         MaterialApp(
@@ -98,7 +105,8 @@ void main() {
       );
       await tester.pumpAndSettle();
       final pill = Color.alphaBlend(c.indicator, c.background);
-      final on = IconTheme.of(tester.element(find.byKey(const Key('chon')))).color!;
+      final on = IconTheme.of(tester.element(find.byKey(const Key('chon'))))
+          .color!;
       expect(tsuContrast(on, pill), greaterThanOrEqualTo(3));
     });
 

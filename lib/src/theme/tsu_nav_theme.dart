@@ -57,7 +57,9 @@ class TsuNavColors {
   static void _require(String what, Color fg, Color bg) {
     final ratio = tsuContrast(fg, bg);
     if (ratio < 3) {
-      throw ArgumentError('TsuNavColors: $what chỉ ${ratio.toStringAsFixed(2)}:1, cần ≥ 3:1 (WCAG 1.4.11).');
+      throw ArgumentError(
+        'TsuNavColors: $what chỉ ${ratio.toStringAsFixed(2)}:1, cần ≥ 3:1 (WCAG 1.4.11).',
+      );
     }
   }
 }
@@ -69,34 +71,46 @@ double tsuContrast(Color a, Color b) {
   return (math.max(la, lb) + 0.05) / (math.min(la, lb) + 0.05);
 }
 
-WidgetStateProperty<IconThemeData> _icons(TsuNavColors c) => WidgetStateProperty.resolveWith(
-  (s) => IconThemeData(color: s.contains(WidgetState.selected) ? c.selected : c.unselected),
-);
+WidgetStateProperty<IconThemeData> _icons(TsuNavColors c) =>
+    WidgetStateProperty.resolveWith(
+      (s) => IconThemeData(
+        color: s.contains(WidgetState.selected) ? c.selected : c.unselected,
+      ),
+    );
 
-WidgetStateProperty<TextStyle> _labels(TsuNavColors c) => WidgetStateProperty.resolveWith(
-  (s) => s.contains(WidgetState.selected)
-      ? TextStyle(color: c.selectedLabel, fontWeight: FontWeight.w600)
-      : TextStyle(color: c.unselectedLabel, fontWeight: FontWeight.w500),
-);
+WidgetStateProperty<TextStyle> _labels(TsuNavColors c) =>
+    WidgetStateProperty.resolveWith(
+      (s) => s.contains(WidgetState.selected)
+          ? TextStyle(color: c.selectedLabel, fontWeight: FontWeight.w600)
+          : TextStyle(color: c.unselectedLabel, fontWeight: FontWeight.w500),
+    );
 
 /// NavigationBar: ghi đè CẢ nền viên chỉ báo, biểu tượng và nhãn theo `WidgetState` - không để M3 tự suy.
-NavigationBarThemeData tsuNavigationBarTheme(TsuNavColors c) => NavigationBarThemeData(
-  backgroundColor: c.background,
-  indicatorColor: c.indicator,
-  surfaceTintColor: Colors.transparent,
-  iconTheme: _icons(c),
-  labelTextStyle: _labels(c),
-);
+NavigationBarThemeData tsuNavigationBarTheme(TsuNavColors c) =>
+    NavigationBarThemeData(
+      backgroundColor: c.background,
+      indicatorColor: c.indicator,
+      surfaceTintColor: Colors.transparent,
+      iconTheme: _icons(c),
+      labelTextStyle: _labels(c),
+    );
 
 /// NavigationRail: cùng bộ màu với [tsuNavigationBarTheme].
-NavigationRailThemeData tsuNavigationRailTheme(TsuNavColors c) => NavigationRailThemeData(
-  backgroundColor: c.background,
-  indicatorColor: c.indicator,
-  selectedIconTheme: IconThemeData(color: c.selected),
-  unselectedIconTheme: IconThemeData(color: c.unselected),
-  selectedLabelTextStyle: TextStyle(color: c.selectedLabel, fontWeight: FontWeight.w600),
-  unselectedLabelTextStyle: TextStyle(color: c.unselectedLabel, fontWeight: FontWeight.w500),
-);
+NavigationRailThemeData tsuNavigationRailTheme(TsuNavColors c) =>
+    NavigationRailThemeData(
+      backgroundColor: c.background,
+      indicatorColor: c.indicator,
+      selectedIconTheme: IconThemeData(color: c.selected),
+      unselectedIconTheme: IconThemeData(color: c.unselected),
+      selectedLabelTextStyle: TextStyle(
+        color: c.selectedLabel,
+        fontWeight: FontWeight.w600,
+      ),
+      unselectedLabelTextStyle: TextStyle(
+        color: c.unselectedLabel,
+        fontWeight: FontWeight.w500,
+      ),
+    );
 
 /// Khai đủ ba cặp `primary/secondary/tertiaryContainer` từ màu nhấn của sản phẩm: nền = [accent] phủ 14% trên
 /// [surface], chữ/biểu tượng = [onSurface]. Thành phần M3 khác (Chip, FilledTonalButton, Badge, SegmentedButton,
