@@ -4,6 +4,19 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/) và SemVer.
 
 ## [Chưa phát hành]
 
+## [0.5.0] - 24/11/2026
+
+### Thêm
+
+- `TsuXdApprover` + `TsuXdApproveScreen` + `TsuXdStrings` (vi/en) - vai XÁC NHẬN đăng nhập QR trong app (CROSS_DEVICE_LOGIN
+  v1.1.0 mục 1, 6.3, 7; phiếu `20261124-QR1` QR2b): app đã đăng nhập quét QR Đ2 ở màn đăng nhập máy tính ⇒ màn Cho phép
+  (thiết bị, quốc gia, thời điểm, câu cảnh báo nguyên văn, Từ chối có focus mặc định, hai nút cùng cỡ) ⇒ **mở khoá cục
+  bộ bắt buộc** (`unlock`, T8) ⇒ mã khớp + đồng hồ 60 giây. Gọi `POST https://tsudev.com/api/xd/scan|approve|deny` bằng
+  access token OIDC scope `tsudev.xd` (client OIDC của app phải được cấp scope này ở IdP). QR Đ1 không bao giờ được gửi lên
+  - app mở trình duyệt như QR3.
+- Gói KHÔNG kéo `local_auth`: app truyền `unlock` (sinh trắc/PIN/khoá ứng dụng sẵn có) để không bắt mọi app đổi
+  `FlutterFragmentActivity`.
+
 ## [0.4.0] - 24/11/2026
 
 ### Thêm
