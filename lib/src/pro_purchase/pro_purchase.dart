@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Quyền lợi Pro - danh sách ĐÓNG của PRODUCT_POLICY 3.7.1 (bộ quy ước v6.1.0).
+/// Quyền lợi Pro - danh sách ĐÓNG của PRODUCT_POLICY 3.7.1 (bộ quy ước v7.0.0: bỏ Q3 đồng bộ đám mây).
 /// Thêm quyền lợi riêng của một sản phẩm ⇒ ADR + chủ dự án duyệt, sửa bộ quy
 /// ước trước rồi mới thêm ở đây.
 enum ProBenefit {
@@ -9,12 +9,9 @@ enum ProBenefit {
 
   /// Q2 - giao diện Pro (chủ đề màu, biểu tượng app thay thế, khung ảnh đại diện).
   proTheme,
-
-  /// Q3 - đồng bộ + sao lưu đám mây mã hoá đầu cuối.
-  cloudSync,
 }
 
-/// Nội dung NGUYÊN VĂN của PRODUCT_POLICY 3.7.3 + 7.5 (bộ quy ước v6.1.0).
+/// Nội dung NGUYÊN VĂN của PRODUCT_POLICY 3.7.3 + 7.5 (bộ quy ước v7.0.0, PRODUCT_POLICY v2.0.0).
 /// KHÔNG sửa câu định vị, điều khoản, ô xác nhận ở đây - đổi ở bộ quy ước trước.
 class ProPurchaseStrings {
   const ProPurchaseStrings._({
@@ -23,7 +20,6 @@ class ProPurchaseStrings {
     required this.benefitsHeading,
     required this.badge,
     required this.proTheme,
-    required this.cloudSync,
     required this.termsTemplate,
     required this.pricePlaceholder,
     required this.paymentPolicy,
@@ -45,12 +41,11 @@ class ProPurchaseStrings {
     proTheme:
         'Giao diện Pro: thêm chủ đề màu, biểu tượng ứng dụng và khung ảnh đại '
         'diện',
-    cloudSync: 'Đồng bộ và sao lưu đám mây mã hoá đầu cuối',
     termsTemplate:
         'TsuDEV Pro {giá} cho 1 năm, KHÔNG tự gia hạn. Gia hạn sớm được cộng '
-        'thêm 1 năm vào thời hạn còn lại. Hết hạn mà chưa gia hạn, ứng dụng trở '
-        'về bản miễn phí và ngừng đồng bộ lên đám mây; dữ liệu trên thiết bị vẫn '
-        'giữ nguyên, bản sao trên đám mây còn tải về được 90 ngày rồi bị xoá.',
+        'thêm 1 năm vào thời hạn còn lại. Hết hạn mà chưa gia hạn, tài khoản trở '
+        'về bản miễn phí: huy hiệu và giao diện Pro tắt; mọi tính năng và dữ '
+        'liệu trên thiết bị vẫn giữ nguyên.',
     pricePlaceholder: '{giá}',
     paymentPolicy: 'Chính sách thanh toán, hoàn tiền và khiếu nại',
     terms: 'Điều khoản sử dụng',
@@ -72,13 +67,12 @@ class ProPurchaseStrings {
     badge:
         'Pro badge next to your account name in every TsuDEV app and website',
     proTheme: 'Pro look: extra color themes, app icons and avatar frames',
-    cloudSync: 'End-to-end encrypted cloud sync and backup',
     termsTemplate:
         'TsuDEV Pro {price} for 1 year, does NOT renew automatically. Renewing '
         'early adds 1 year to your remaining time. If it expires without '
-        'renewal, the app returns to the free version and stops syncing to the '
-        'cloud; data on your device stays intact, and your cloud copy can be '
-        'downloaded for 90 days before it is deleted.',
+        'renewal, your account returns to the free version: the Pro badge and '
+        'Pro themes are turned off; all features and data on your devices stay '
+        'intact.',
     pricePlaceholder: '{price}',
     paymentPolicy: 'Payment, refund and complaint policy',
     terms: 'Terms of use',
@@ -94,7 +88,6 @@ class ProPurchaseStrings {
   final String benefitsHeading;
   final String badge;
   final String proTheme;
-  final String cloudSync;
   final String termsTemplate;
   final String pricePlaceholder;
   final String paymentPolicy;
@@ -106,7 +99,6 @@ class ProPurchaseStrings {
   String benefit(ProBenefit b) => switch (b) {
     ProBenefit.badge => badge,
     ProBenefit.proTheme => proTheme,
-    ProBenefit.cloudSync => cloudSync,
   };
 
   /// Điều khoản 7.5 với giá đã định dạng (vd. "490.000 ₫" hoặc giá cửa hàng trả về).

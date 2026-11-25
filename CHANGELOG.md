@@ -4,6 +4,26 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/) và SemVer.
 
 ## [Chưa phát hành]
 
+## [0.9.0] - 26/11/2026
+
+Dữ liệu chỉ ở thiết bị - bỏ đồng bộ đám mây và Pro Q3 (tsudev-standards **v7.0.0**, `PRODUCT_POLICY` v2.0.0; phiếu
+`20261125-SYN1`). **Thay đổi phá vỡ** cho app nâng từ 0.8.x.
+
+### Bỏ
+
+- `ProBenefit.cloudSync` (Q3) và chữ quyền lợi tương ứng.
+- `ProNotice*`, `maybeShowProNotice`, `ProNoticeController` (PRODUCT_POLICY 7.3 bỏ). App gọi `removeLegacyLocalKeys(store)`
+  một lần để xoá khoá `tsu.pro_notice.last_shown`.
+- `ProRenewalDecision.cloudDeleteAt`, `ProRenewalPolicy.cloudRetention`, tham số `hasCloudSync`, `cloudSentence`.
+
+### Đổi
+
+- Điều khoản 7.5 (`ProPurchaseStrings.termsTemplate`) và nhắc/báo hết kỳ 7.6 (`ProRenewalStrings`) theo nguyên văn
+  PRODUCT_POLICY v2.0.0: hết Pro chỉ tắt huy hiệu + giao diện Pro, mọi tính năng và dữ liệu trên thiết bị giữ nguyên;
+  báo hết kỳ không còn ngày xoá. `ProRenewalStrings.body({days, date})` - `date` tuỳ chọn.
+- README: JWS cho máy chủ sản phẩm (TsuDEV Sync đã ngừng).
+- Đồng bộ bộ quy ước v6.6.0 → v7.1.0. Golden ảnh hộp thoại gia hạn sinh lại bằng Flutter 3.47.8 (bản CI ghim).
+
 ## [0.8.0] - 26/11/2026
 
 ### Thêm

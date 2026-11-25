@@ -58,7 +58,9 @@ chuyên đề. Bản đồ đầy đủ: [`docs/00-INDEX.md`](docs/00-INDEX.md).
 | Cài đặt bằng lệnh (winget, Scoop, APT/RPM, Homebrew) | [`docs/PACKAGING.md`](docs/PACKAGING.md) |
 | **Cài không bị chặn**: cửa hàng, ký mã, chống báo nhầm | [`docs/DISTRIBUTION_TRUST.md`](docs/DISTRIBUTION_TRUST.md) |
 | **Apple (iOS, iPadOS, macOS)**: CI/CD từ Ubuntu, ký, TestFlight, bí mật `APPLE_*` | [`docs/APPLE_CICD.md`](docs/APPLE_CICD.md) |
-| **Chính sách sản phẩm**: ngôn ngữ/giao diện theo hệ thống, KHÔNG quảng cáo, Pro + Ủng hộ, huy hiệu, iOS, website có hình/video, **lưu cục bộ - đồng bộ/sao lưu đám mây là Pro** | [`docs/PRODUCT_POLICY.md`](docs/PRODUCT_POLICY.md) |
+| **Chính sách sản phẩm**: ngôn ngữ/giao diện theo hệ thống, KHÔNG quảng cáo, Pro + Ủng hộ, huy hiệu, iOS, website có hình/video, **dữ liệu chỉ ở thiết bị - không đồng bộ đám mây** | [`docs/PRODUCT_POLICY.md`](docs/PRODUCT_POLICY.md) |
+| **Toàn vẹn ứng dụng**: máy chủ tự quyết, **bắt buộc cập nhật bản mới nhất (modal khoá)**, chứng thực app, làm rối mã PRIVATE | [`docs/APP_INTEGRITY.md`](docs/APP_INTEGRITY.md) |
+| **Đồng bộ giữa thiết bị** qua Wi-Fi nội bộ/Bluetooth/QR (Tsu Link), không internet | [`docs/LOCAL_SYNC.md`](docs/LOCAL_SYNC.md) |
 | **Nộp duyệt** cửa hàng/antivirus: đề xuất phiên agent tự điền biểu mẫu | [`docs/STORE_SUBMISSION.md`](docs/STORE_SUBMISSION.md) |
 | **Kho tri thức agent (AKB)** ngoài repo: lỗi, mẹo, quyết định dùng chung mọi dự án - `akb start` / `akb search` | [`docs/KNOWLEDGE_BASE.md`](docs/KNOWLEDGE_BASE.md) |
 | Đồng bộ quy ước xuống repo con | [`docs/SYNC.md`](docs/SYNC.md) |
@@ -223,6 +225,10 @@ git grep -lP '\x{2014}' -- . | grep -v '^migrations/'
 - Mọi sản phẩm có tài khoản phải đủ ba lối vào (Google, GitHub, tài khoản tsudev)
   và cơ chế Xác minh tài khoản. Chi tiết:
   [`docs/AUTH_AND_ACCOUNT.md`](docs/AUTH_AND_ACCOUNT.md).
+- Mọi sản phẩm có giao diện người dùng phải **nhắc đăng nhập** bằng modal nổi bỏ qua được
+  khi thiết bị có internet mà chưa đăng nhập (không chặn chức năng lõi, không gọi
+  mạng ngầm, dùng thành phần chung `TsuSignInReminder` / `<tsu-signin-reminder>`).
+  Chi tiết: [`docs/AUTH_AND_ACCOUNT.md`](docs/AUTH_AND_ACCOUNT.md) mục 14.4.
 - Mọi sản phẩm phải đủ bộ logo/favicon/icon và siêu dữ liệu nối về `tsudev.com`.
   Chi tiết: [`docs/BRAND_ASSETS.md`](docs/BRAND_ASSETS.md) mục 12 và
   [`docs/ECOSYSTEM_IDENTITY.md`](docs/ECOSYSTEM_IDENTITY.md).

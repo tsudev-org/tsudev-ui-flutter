@@ -1,4 +1,4 @@
-/// Thành phần dùng chung của hệ TsuDEV cho Flutter (PRODUCT_POLICY mục 3.7.3, 4, 7.3, 7.4, 7.6).
+/// Thành phần dùng chung của hệ TsuDEV cho Flutter (PRODUCT_POLICY mục 3.7.3, 4, 7.4-7.7; AUTH_AND_ACCOUNT 14.4).
 library;
 
 export 'src/badge/tsu_badge.dart';
@@ -9,7 +9,6 @@ export 'src/entitlements/entitlements_repository.dart';
 export 'src/entitlements/jwks.dart'
     show DiscoveryJwks, Es256PublicKey, JwksSource, StaticJwks, parseJwks;
 export 'src/installation/installation_id.dart';
-export 'src/pro_notice/pro_notice.dart';
 export 'src/pro_purchase/pro_purchase.dart';
 export 'src/pro_theme/tsu_pro_theme.dart';
 export 'src/pro_theme/tsu_pro_widgets.dart';

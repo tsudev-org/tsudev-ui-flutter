@@ -12,7 +12,7 @@ enum ProRenewalKind {
   expired,
 }
 
-/// Nội dung NGUYÊN VĂN của PRODUCT_POLICY 7.6 (v1.2.0, bộ quy ước v4.0.0).
+/// Nội dung NGUYÊN VĂN của PRODUCT_POLICY 7.6 (v2.0.0, bộ quy ước v7.0.0 - bỏ Q3).
 /// KHÔNG sửa chữ ở đây - đổi ở bộ quy ước trước rồi đồng bộ lại.
 class ProRenewalStrings {
   const ProRenewalStrings._({
@@ -20,17 +20,15 @@ class ProRenewalStrings {
     required this.bodyTemplate,
     required this.primary,
     required this.secondary,
-    required this.datePlaceholder,
-    this.cloudSentence,
+    this.datePlaceholder,
   });
 
   static const reminderVi = ProRenewalStrings._(
     title: 'Gia hạn TsuDEV Pro',
     bodyTemplate:
         'Gói TsuDEV Pro của bạn hết hạn sau {n} ngày (ngày {ngày}). Gia hạn để '
-        'tiếp tục đồng bộ và sao lưu đám mây. Nếu không gia hạn, ứng dụng sẽ '
-        'trở về bản miễn phí: dữ liệu trên thiết bị vẫn giữ nguyên nhưng không '
-        'còn đồng bộ lên đám mây.',
+        'giữ huy hiệu và giao diện Pro. Nếu không gia hạn, tài khoản sẽ trở về '
+        'bản miễn phí; mọi tính năng và dữ liệu trên thiết bị vẫn giữ nguyên.',
     primary: 'Gia hạn',
     secondary: 'Để sau',
     datePlaceholder: '{ngày}',
@@ -39,10 +37,9 @@ class ProRenewalStrings {
   static const reminderEn = ProRenewalStrings._(
     title: 'Renew TsuDEV Pro',
     bodyTemplate:
-        'Your TsuDEV Pro expires in {n} days (on {date}). Renew to keep cloud '
-        "sync and backup. If you don't renew, the app returns to the free "
-        'version: data on this device stays intact but no longer syncs to the '
-        'cloud.',
+        'Your TsuDEV Pro expires in {n} days (on {date}). Renew to keep the Pro '
+        "badge and Pro themes. If you don't renew, your account returns to the "
+        'free version; all features and data on your devices stay intact.',
     primary: 'Renew',
     secondary: 'Later',
     datePlaceholder: '{date}',
@@ -51,25 +48,19 @@ class ProRenewalStrings {
   static const expiredVi = ProRenewalStrings._(
     title: 'TsuDEV Pro đã hết hạn',
     bodyTemplate:
-        'Ứng dụng đã trở về bản miễn phí và ngừng đồng bộ lên đám mây. Dữ liệu '
-        'trên thiết bị vẫn giữ nguyên. Bản sao trên đám mây còn tải về được tới '
-        'ngày {ngày_xoá}.',
+        'Tài khoản đã trở về bản miễn phí: huy hiệu và giao diện Pro đã tắt. Mọi '
+        'tính năng và dữ liệu trên thiết bị vẫn giữ nguyên.',
     primary: 'Gia hạn',
     secondary: 'Đóng',
-    datePlaceholder: '{ngày_xoá}',
-    cloudSentence: ' Bản sao trên đám mây còn tải về được tới ngày {ngày_xoá}.',
   );
 
   static const expiredEn = ProRenewalStrings._(
     title: 'TsuDEV Pro has expired',
     bodyTemplate:
-        'The app is back on the free version and has stopped syncing to the '
-        'cloud. Data on this device stays intact. Your cloud copy can be '
-        'downloaded until {delete_date}.',
+        'Your account is back on the free version: the Pro badge and Pro themes '
+        'are off. All features and data on your devices stay intact.',
     primary: 'Renew',
     secondary: 'Close',
-    datePlaceholder: '{delete_date}',
-    cloudSentence: ' Your cloud copy can be downloaded until {delete_date}.',
   );
 
   final String title;
@@ -77,22 +68,16 @@ class ProRenewalStrings {
   final String primary;
   final String secondary;
 
-  /// `{ngày}` / `{date}` (nhắc) hoặc `{ngày_xoá}` / `{delete_date}` (hết kỳ).
-  final String datePlaceholder;
+  /// `{ngày}` / `{date}` (chỉ bảng nhắc; báo hết kỳ không có ngày).
+  final String? datePlaceholder;
 
-  /// Câu cuối về bản sao đám mây - bỏ khi sản phẩm không có đồng bộ đám mây.
-  final String? cloudSentence;
-
-  /// Điền `{n}` (nhắc) và ngày đã định dạng; [hasCloudSync] = false ⇒ bỏ câu
-  /// cuối về bản sao đám mây (chỉ bảng "Khi hết kỳ").
-  String body({int? days, required String date, bool hasCloudSync = true}) {
+  /// Điền `{n}` và ngày đã định dạng (chỉ bảng nhắc).
+  String body({int? days, String? date}) {
     var t = bodyTemplate;
-    final cloud = cloudSentence;
-    if (!hasCloudSync && cloud != null && t.endsWith(cloud)) {
-      t = t.substring(0, t.length - cloud.length);
-    }
     if (days != null) t = t.replaceAll('{n}', '$days');
-    return t.replaceAll(datePlaceholder, date);
+    final ph = datePlaceholder;
+    if (ph != null && date != null) t = t.replaceAll(ph, date);
+    return t;
   }
 
   static ProRenewalStrings of(
@@ -162,9 +147,6 @@ class ProRenewalDecision {
   /// `{n}` - số ngày còn lại làm tròn lên, ≥ 1 (chỉ với [ProRenewalKind.reminder]).
   final int? daysLeft;
 
-  /// `{ngày_xoá}` = `pro_until` + 90 ngày (UTC).
-  DateTime get cloudDeleteAt => proUntil.add(ProRenewalPolicy.cloudRetention);
-
   @override
   bool operator ==(Object other) =>
       other is ProRenewalDecision &&
@@ -193,9 +175,6 @@ abstract final class ProRenewalPolicy {
 
   /// Quay lại app sau ≥ mức này ở nền ⇒ tính là một lần mở mới.
   static const reopenAfter = Duration(minutes: 30);
-
-  /// Bản sao đám mây còn kéo/xuất được bấy lâu sau `pro_until`.
-  static const cloudRetention = Duration(days: 90);
 
   /// `{n}` = số ngày còn lại làm tròn lên, ≥ 1.
   static int daysLeft(DateTime proUntil, DateTime now) {
@@ -330,15 +309,11 @@ class ProRenewalDialog extends StatelessWidget {
     super.key,
     required this.decision,
     this.locale,
-    this.hasCloudSync = true,
     this.formatDate = formatProRenewalDate,
   });
 
   final ProRenewalDecision decision;
   final Locale? locale;
-
-  /// Sản phẩm không có đồng bộ đám mây ⇒ bỏ câu cuối của báo hết kỳ.
-  final bool hasCloudSync;
 
   /// Định dạng ngày (nhận giờ máy). Mặc định [formatProRenewalDate].
   final String Function(DateTime local, Locale locale) formatDate;
@@ -351,19 +326,13 @@ class ProRenewalDialog extends StatelessWidget {
         Localizations.maybeLocaleOf(context) ??
         WidgetsBinding.instance.platformDispatcher.locale;
     final date = switch (decision.kind) {
-      ProRenewalKind.reminder => decision.proUntil,
-      ProRenewalKind.expired => decision.cloudDeleteAt,
+      ProRenewalKind.reminder => formatDate(decision.proUntil.toLocal(), l),
+      ProRenewalKind.expired => null,
     };
     return AlertDialog(
       title: Text(s.title),
       scrollable: true,
-      content: Text(
-        s.body(
-          days: decision.daysLeft,
-          date: formatDate(date.toLocal(), l),
-          hasCloudSync: hasCloudSync,
-        ),
-      ),
+      content: Text(s.body(days: decision.daysLeft, date: date)),
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(ProRenewalAction.later),
@@ -399,7 +368,6 @@ Future<ProRenewalAction?> maybeShowProRenewal(
   required EntitlementState state,
   required VoidCallback onRenew,
   Locale? locale,
-  bool hasCloudSync = true,
 }) async {
   try {
     final d = await controller.check(state);
@@ -409,11 +377,7 @@ Future<ProRenewalAction?> maybeShowProRenewal(
     final action =
         await showDialog<ProRenewalAction>(
           context: context,
-          builder: (_) => ProRenewalDialog(
-            decision: d,
-            locale: locale,
-            hasCloudSync: hasCloudSync,
-          ),
+          builder: (_) => ProRenewalDialog(decision: d, locale: locale),
         ) ??
         ProRenewalAction.dismissed;
     if (action == ProRenewalAction.renew) onRenew();
