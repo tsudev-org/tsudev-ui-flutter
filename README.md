@@ -28,7 +28,7 @@ dependencies:
   tsudev_ui:
     git:
       url: https://github.com/tsudev-org/tsudev-ui-flutter.git
-      ref: v0.7.0
+      ref: v0.7.1
 ```
 
 ## Dùng
@@ -198,8 +198,8 @@ Practices: [`docs/best-practices.json`](docs/best-practices.json).
   aware, with screen reader labels in Vietnamese and English.
 - **Pro notices** (`ProNotice*`, `ProRenewal*`): the "several devices without Pro" dialog and the Pro renewal /
   expiry reminders, with the exact policy texts in Vietnamese and English.
-- **Pro purchase sheet** (`ProPurchaseSheet`, `showProPurchaseSheet`): every TsuDEV app is free and open source; Pro is
-  an optional plan to support the author. The sheet shows the positioning sentence, the benefits that actually work in
+- **Pro purchase sheet** (`ProPurchaseSheet`, `showProPurchaseSheet`): TsuDEV apps are free and projects labelled OPEN
+  publish their source code; Pro is an optional plan to support the author. The sheet shows the positioning sentence, the benefits that actually work in
   the app, the 1-year non-renewing terms and an unticked confirmation box that enables the buy button.
 - **Pro themes** (`TsuProTheme`, `TsuProThemePicker`, `TsuProAvatarFrame`): the five Pro colour themes generated from
   the standards' `pro-themes.json` (WCAG-checked), a Settings → Appearance picker and a gradient avatar frame. High
