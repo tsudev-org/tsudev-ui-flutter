@@ -58,7 +58,7 @@ flutter test --update-goldens test/golden_test.dart   # khi đổi giao diện c
 | Vùng | Chủ sở hữu |
 | --- | --- |
 | `lib/src/badge/` | phiên điều phối (đổi thiết kế: sửa SVG ở tsudev-standards TRƯỚC) |
-| `lib/src/pro_notice/` | phiên điều phối (chữ NGUYÊN VĂN PRODUCT_POLICY 7.3 - test đối chiếu tự động) |
+| `lib/src/sign_in_reminder/` | phiên điều phối (chữ NGUYÊN VĂN AUTH_AND_ACCOUNT 14.4.3, nhịp 14.4.2) |
 | `lib/src/pro_renewal/` | phiên điều phối (chữ NGUYÊN VĂN PRODUCT_POLICY 7.6 - test đối chiếu tự động) |
 | `lib/src/entitlements/`, `lib/src/installation/` | phiên điều phối (hợp đồng PRODUCT_POLICY 7.4, AUTH_AND_ACCOUNT 14.3) |
 
@@ -70,7 +70,7 @@ flutter test --update-goldens test/golden_test.dart   # khi đổi giao diện c
 
 ### B.5. Việc riêng của repo cần biết trước khi sửa
 
-- Chữ ProNotice và màu huy hiệu là HỢP ĐỒNG: nguồn là `.standards/docs/PRODUCT_POLICY.md` + `assets/badges/` của
+- Chữ ProRenewal/ProPurchase/SignInReminder và màu huy hiệu là HỢP ĐỒNG: nguồn là `.standards/docs/PRODUCT_POLICY.md` + `assets/badges/` của
   tsudev-standards. Bộ quy ước đổi chữ ⇒ đồng bộ `.standards` + sửa `lib/` trong cùng PR (test so nguyên văn sẽ đỏ).
 - Đổi API công khai ⇒ tăng phiên bản theo SemVer, ghi CHANGELOG, gắn tag; repo sản phẩm ghim tag.
 - `test/support/jws_fixture.dart` chứa khoá riêng P-256 CÔNG KHAI của test (vector RFC 6979), không phải bí mật.
