@@ -4,6 +4,22 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/) và SemVer.
 
 ## [Chưa phát hành]
 
+## [0.6.0] - 25/11/2026
+
+### Thêm
+
+- `ProPurchaseSheet` + `showProPurchaseSheet` + `ProPurchaseStrings` (vi/en) + `ProBenefit` (Q1 huy hiệu, Q2 giao diện
+  Pro, Q3 đồng bộ) - màn mua TsuDEV Pro theo PRODUCT_POLICY 3.7.3 (bộ quy ước v6.1.0, phiếu `20261125-PRO3`): câu định
+  vị nguyên văn → chỉ quyền lợi app truyền vào (đang chạy thật) → điều khoản 7.5 có giá + liên kết Chính sách thanh
+  toán, hoàn tiền và khiếu nại / Điều khoản → ô xác nhận KHÔNG chọn sẵn; nút mua vô hiệu tới khi đánh dấu; nút "Đóng"
+  trung tính. Gói không tự thanh toán - app chọn IAP cửa hàng hoặc `proWebUrl`. Test đối chiếu nguyên văn với
+  `PRODUCT_POLICY.md` khi có bản sao bộ quy ước cạnh repo.
+
+### Chưa làm
+
+- Chủ đề Pro (Q2): bộ quy ước chưa có token chủ đề Pro - cần thêm ở `tsudev-standards/tokens` trước (3.7.1: "repo không
+  tự chế"). App chưa có Q2 thì KHÔNG truyền `ProBenefit.proTheme`.
+
 ## [0.5.0] - 24/11/2026
 
 ### Thêm

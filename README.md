@@ -11,6 +11,7 @@ app-la-ban, lotus-share) dùng đúng một bản:
 | `TsuBadge`, `TsuNameWithBadge` | PRODUCT_POLICY 4.2, `assets/badges/` | Huy hiệu Pro / Ủng hộ cạnh tên: 0,75 × dòng (16-20 px), shimmer 7 giây, tim đập khi rê/chạm, tắt khi Giảm chuyển động, nhãn đọc màn hình vi/en |
 | `ProNotice*`, `maybeShowProNotice` | PRODUCT_POLICY 7.3 | Hộp thoại "nhiều thiết bị chưa có Pro": chữ nguyên văn vi/en, chu kỳ 30 ngày ở `tsu.pro_notice.last_shown` |
 | `ProRenewal*`, `maybeShowProRenewal` | PRODUCT_POLICY 7.6 | Nhắc gia hạn 7 ngày cuối (mỗi lần mở app) + báo hết kỳ một lần mỗi `pro_until`: chữ nguyên văn vi/en |
+| `ProPurchaseSheet`, `showProPurchaseSheet`, `ProBenefit` | PRODUCT_POLICY 3.7.3, 7.5 | Màn mua Pro: câu định vị nguyên văn → quyền lợi đang chạy thật (Q1-Q3) → điều khoản 7.5 + liên kết Chính sách thanh toán / Điều khoản → ô xác nhận KHÔNG chọn sẵn; nút mua vô hiệu tới khi đánh dấu; vi/en |
 | `EntitlementVerifier`, `EntitlementsRepository`, `DiscoveryJwks`, `TsudevEntitlementsApi` | PRODUCT_POLICY 7.4 | Kiểm JWS quyền lợi ES256 bằng JWKS (`iss`, `aud`, `exp`, `typ`, `cnf.jkt`), đệm ≤ 7 ngày, hết hạn ⇒ miễn phí; `jwsForServer()` cho máy chủ đồng bộ (`iat` ≤ 24 giờ, thử lại khi `401 stale`) |
 | `DpopSigner`, `DpopKey`, `SoftwareDpopKey` | PRODUCT_POLICY 7.4, RFC 9449/7638 | Bằng chứng DPoP bằng khoá P-256 riêng mỗi cài đặt; thumbprint `cnf.jkt` |
 | `InstallationId` | AUTH_AND_ACCOUNT 14.3 | Mã cài đặt ngẫu nhiên 128 bit, base64url 22 ký tự, header `X-Tsu-Installation` |
@@ -78,6 +79,17 @@ await maybeShowProRenewal(
   onRenew: () => isPlayBuild ? startPlayBilling('tsudev_pro', 'nam') : launchUrl(proWebUrl('qulythuchi-app')),
   hasCloudSync: true,                                 // app không có đồng bộ đám mây ⇒ false (bỏ câu cuối)
 );
+
+// 6. Màn mua Pro (3.7.3) - chỉ mở từ Tài khoản/Cài đặt, Giới thiệu, hoặc nút của hộp thoại 7.3/7.6.
+if (await showProPurchaseSheet(
+  context,
+  benefits: {ProBenefit.badge, ProBenefit.cloudSync},   // CHỈ quyền lợi đang chạy thật trong app
+  price: isPlayBuild ? playPrice : '490.000 ₫',          // web: giá đã gồm thuế; Play: giá cửa hàng trả về
+  onOpenPaymentPolicy: () => launchUrl(Uri.parse('https://tsudev.com/chinh-sach-thanh-toan')),
+  onOpenTerms: () => launchUrl(Uri.parse('https://tsudev.com/terms')),
+)) {
+  isPlayBuild ? startPlayBilling('tsudev_pro', 'nam') : launchUrl(proWebUrl('qulythuchi-app'));
+}
 ```
 
 ### DPoP và JWS cho máy chủ đồng bộ
@@ -184,6 +196,9 @@ Practices: [`docs/best-practices.json`](docs/best-practices.json).
   aware, with screen reader labels in Vietnamese and English.
 - **Pro notices** (`ProNotice*`, `ProRenewal*`): the "several devices without Pro" dialog and the Pro renewal /
   expiry reminders, with the exact policy texts in Vietnamese and English.
+- **Pro purchase sheet** (`ProPurchaseSheet`, `showProPurchaseSheet`): every TsuDEV app is free and open source; Pro is
+  an optional plan to support the author. The sheet shows the positioning sentence, the benefits that actually work in
+  the app, the 1-year non-renewing terms and an unticked confirmation box that enables the buy button.
 - **Entitlements** (`EntitlementVerifier`, `EntitlementsRepository`): verifies the ES256-signed entitlement JWS from
   tsudev.com against its JWKS (`iss`, `aud`, `exp`, `typ`, `cnf.jkt`), caches it for at most 7 days and falls back
   to the free tier on any error; `jwsForServer()` for sync servers.
