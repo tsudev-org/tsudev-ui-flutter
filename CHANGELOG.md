@@ -4,6 +4,24 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/) và SemVer.
 
 ## [Chưa phát hành]
 
+## [0.7.0] - 25/11/2026
+
+### Thêm
+
+- Chủ đề Pro (Q2, PRODUCT_POLICY 3.7.1; tsudev-standards **v6.4.0** `DESIGN_SYSTEM.md` mục 1.3; phiếu `20261125-PRO3`):
+  `TsuProTheme` (5 chủ đề, `all`, `byId`, tên vi/en), `TsuProPalette` (18 vai trò × Sáng/Tối), `tsuResolveProTheme`
+  (cần Pro; tương phản cao thắng; id lạ ⇒ mặc định), `tsuApplyProTheme` (gộp vào `ColorScheme`, giữ `onSurface`/`error`,
+  khai đủ `*Container`), `TsuProThemePicker` (Cài đặt → Giao diện, vi/en, ngữ nghĩa nhóm chọn một; chưa Pro vẫn thấy mẫu
+  màu, không làm mờ/khoá, chỉ "Mặc định" chọn được + "Tìm hiểu TsuDEV Pro"), `TsuProAvatarFrame` (vòng chuyển sắc, không
+  dấu tích).
+- `scripts/gen_pro_themes.dart`: sinh `lib/src/pro_theme/tsu_pro_themes.g.dart` từ `.standards/tokens/pro-themes.json`;
+  test bắt lệch với bộ quy ước và đo lại WCAG phía Flutter.
+
+### Đổi
+
+- Đồng bộ bộ quy ước v4.2.0 → **v6.4.0** (`.standards/`).
+- App đã có Q2 chạy thật mới được truyền `ProBenefit.proTheme` vào `ProPurchaseSheet`.
+
 ## [0.6.0] - 25/11/2026
 
 ### Thêm

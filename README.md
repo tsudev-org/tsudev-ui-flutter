@@ -12,6 +12,7 @@ app-la-ban, lotus-share) dùng đúng một bản:
 | `ProNotice*`, `maybeShowProNotice` | PRODUCT_POLICY 7.3 | Hộp thoại "nhiều thiết bị chưa có Pro": chữ nguyên văn vi/en, chu kỳ 30 ngày ở `tsu.pro_notice.last_shown` |
 | `ProRenewal*`, `maybeShowProRenewal` | PRODUCT_POLICY 7.6 | Nhắc gia hạn 7 ngày cuối (mỗi lần mở app) + báo hết kỳ một lần mỗi `pro_until`: chữ nguyên văn vi/en |
 | `ProPurchaseSheet`, `showProPurchaseSheet`, `ProBenefit` | PRODUCT_POLICY 3.7.3, 7.5 | Màn mua Pro: câu định vị nguyên văn → quyền lợi đang chạy thật (Q1-Q3) → điều khoản 7.5 + liên kết Chính sách thanh toán / Điều khoản → ô xác nhận KHÔNG chọn sẵn; nút mua vô hiệu tới khi đánh dấu; vi/en |
+| `TsuProTheme`, `tsuResolveProTheme`, `tsuApplyProTheme`, `TsuProThemePicker`, `TsuProAvatarFrame` | PRODUCT_POLICY 3.7.1 (Q2), DESIGN_SYSTEM 1.3 | Chủ đề Pro: 5 chủ đề sinh từ `.standards/tokens/pro-themes.json` (Hổ phách, Chàm đêm, Rừng thông, Hoa đào, Than chì), gộp vào `ColorScheme` giữ màu chữ/lỗi; tương phản cao và hết Pro ⇒ về mặc định; bộ chọn Cài đặt → Giao diện (chưa Pro vẫn thấy mẫu, chỉ Mặc định chọn được + "Tìm hiểu TsuDEV Pro"); khung ảnh đại diện chuyển sắc |
 | `EntitlementVerifier`, `EntitlementsRepository`, `DiscoveryJwks`, `TsudevEntitlementsApi` | PRODUCT_POLICY 7.4 | Kiểm JWS quyền lợi ES256 bằng JWKS (`iss`, `aud`, `exp`, `typ`, `cnf.jkt`), đệm ≤ 7 ngày, hết hạn ⇒ miễn phí; `jwsForServer()` cho máy chủ đồng bộ (`iat` ≤ 24 giờ, thử lại khi `401 stale`) |
 | `DpopSigner`, `DpopKey`, `SoftwareDpopKey` | PRODUCT_POLICY 7.4, RFC 9449/7638 | Bằng chứng DPoP bằng khoá P-256 riêng mỗi cài đặt; thumbprint `cnf.jkt` |
 | `InstallationId` | AUTH_AND_ACCOUNT 14.3 | Mã cài đặt ngẫu nhiên 128 bit, base64url 22 ký tự, header `X-Tsu-Installation` |
@@ -27,7 +28,7 @@ dependencies:
   tsudev_ui:
     git:
       url: https://github.com/tsudev-org/tsudev-ui-flutter.git
-      ref: v0.5.0
+      ref: v0.7.0
 ```
 
 ## Dùng
@@ -180,7 +181,8 @@ ThemeData(
 flutter pub get
 dart format --output=none --set-exit-if-changed lib test
 flutter analyze --fatal-infos
-flutter test                    # 125 test, gồm golden Sáng/Tối, khổ hẹp/rộng và fuzz bộ kiểm JWS
+dart run scripts/gen_pro_themes.dart   # sinh lại chủ đề Pro sau khi sync bộ quy ước (test bắt lệch)
+flutter test                    # 173 test, gồm golden Sáng/Tối, khổ hẹp/rộng và fuzz bộ kiểm JWS
 ```
 
 Golden chỉ khớp trên Linux với đúng Flutter ghim trong CI (`3.47.8`); phông Roboto lấy từ Flutter SDK lúc test.
@@ -199,6 +201,9 @@ Practices: [`docs/best-practices.json`](docs/best-practices.json).
 - **Pro purchase sheet** (`ProPurchaseSheet`, `showProPurchaseSheet`): every TsuDEV app is free and open source; Pro is
   an optional plan to support the author. The sheet shows the positioning sentence, the benefits that actually work in
   the app, the 1-year non-renewing terms and an unticked confirmation box that enables the buy button.
+- **Pro themes** (`TsuProTheme`, `TsuProThemePicker`, `TsuProAvatarFrame`): the five Pro colour themes generated from
+  the standards' `pro-themes.json` (WCAG-checked), a Settings → Appearance picker and a gradient avatar frame. High
+  contrast always wins; without Pro the app keeps its default colours.
 - **Entitlements** (`EntitlementVerifier`, `EntitlementsRepository`): verifies the ES256-signed entitlement JWS from
   tsudev.com against its JWKS (`iss`, `aud`, `exp`, `typ`, `cnf.jkt`), caches it for at most 7 days and falls back
   to the free tier on any error; `jwsForServer()` for sync servers.
