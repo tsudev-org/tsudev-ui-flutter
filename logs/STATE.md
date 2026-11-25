@@ -17,6 +17,8 @@
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
+- 26/11/2026 - v0.8.0 LG3: `TsuSignInReminder` + `SignInReminderPolicy` (AUTH 14.4, phiếu `logs/handover/20261126-LG3_*`).
+
 - 20/11/2026 - v0.2.0: ProRenewal (7.6, 6 ca bắt buộc + golden), `jwsForServer()`/401 stale, DPoP P-256 (RFC
   9449/7638), `cnf.jkt`, bộ quy ước v4.0.0 (phase PRO2-UI của phiên điều phối).
 - 20/11/2026 - v0.1.0: TsuBadge, ProNotice (5 ca bắt buộc), kiểm JWS ES256 + JWKS, mã cài đặt 128 bit; CI xanh

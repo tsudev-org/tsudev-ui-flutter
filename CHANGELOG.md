@@ -4,6 +4,16 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/) và SemVer.
 
 ## [Chưa phát hành]
 
+## [0.8.0] - 26/11/2026
+
+### Thêm
+
+- Nhắc đăng nhập (tsudev-standards **v7.1.0** `AUTH_AND_ACCOUNT.md` mục 14.4, phiếu `20261126-LG3`):
+  `SignInReminderPolicy` (điều kiện R1-R6 qua `SignInReminderConditions`, nhịp 1 lần/phiên → 24 giờ → 3 ngày → 7 ngày,
+  "Không nhắc trong 30 ngày", đăng xuất ⇒ 24 giờ, chỉ lưu cục bộ, đồng hồ tiêm được), `TsuSignInReminder` (modal nguyên
+  văn vi/en, lối vào của app + Quét mã QR, dòng nhận diện `tsudev.com`, đóng bằng X/Esc/Back/chạm ngoài = Để sau, tiêu
+  điểm đầu ở lối vào chính, không có ô nhập), `TsuSignInReminder.maybeShow`. 24 test.
+
 ## [0.7.1] - 25/11/2026
 
 ### Đổi
