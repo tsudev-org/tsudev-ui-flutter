@@ -36,9 +36,10 @@ class ProPurchaseStrings {
   static const vi = ProPurchaseStrings._(
     title: 'TsuDEV Pro',
     positioning:
-        'Mọi ứng dụng TsuDEV miễn phí và mã nguồn mở. TsuDEV Pro không bắt '
-        'buộc: bạn chọn Pro để ủng hộ tác giả duy trì và phát triển dự án, đổi '
-        'lại tài khoản nhận thêm các quyền lợi dưới đây.',
+        'Ứng dụng TsuDEV miễn phí; dự án gắn nhãn OPEN công khai mã nguồn trên '
+        'GitHub. TsuDEV Pro không bắt buộc: bạn chọn Pro để ủng hộ tác giả duy '
+        'trì và phát triển dự án, đổi lại tài khoản nhận thêm các quyền lợi '
+        'dưới đây.',
     benefitsHeading: 'Quyền lợi',
     badge: 'Huy hiệu Pro cạnh tên tài khoản ở mọi ứng dụng và website TsuDEV',
     proTheme:
@@ -63,9 +64,10 @@ class ProPurchaseStrings {
   static const en = ProPurchaseStrings._(
     title: 'TsuDEV Pro',
     positioning:
-        'Every TsuDEV app is free and open source. TsuDEV Pro is optional: '
-        'choose Pro to support the author in maintaining and developing the '
-        'project, and your account gets the extra benefits below.',
+        'TsuDEV apps are free; projects labelled OPEN publish their source code '
+        'on GitHub. TsuDEV Pro is optional: choose Pro to support the author in '
+        'maintaining and developing the project, and your account gets the '
+        'extra benefits below.',
     benefitsHeading: 'Benefits',
     badge:
         'Pro badge next to your account name in every TsuDEV app and website',

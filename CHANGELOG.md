@@ -4,6 +4,15 @@ Theo [Keep a Changelog](https://keepachangelog.com/vi/1.1.0/) và SemVer.
 
 ## [Chưa phát hành]
 
+## [0.7.1] - 25/11/2026
+
+### Đổi
+
+- `ProPurchaseStrings.positioning` (vi/en) theo câu định vị mới chủ dự án duyệt 25/11/2026 (tsudev-standards **v6.6.0**,
+  `PRODUCT_POLICY` 3.7.3): "Ứng dụng TsuDEV miễn phí; dự án gắn nhãn OPEN công khai mã nguồn trên GitHub. …" / "TsuDEV
+  apps are free; projects labelled OPEN publish their source code on GitHub. …" (có dự án PRIVATE - mục 3.7.7).
+- Đồng bộ bộ quy ước v6.4.0 → v6.6.0.
+
 ## [0.7.0] - 25/11/2026
 
 ### Thêm
