@@ -11,6 +11,8 @@ export 'src/entitlements/jwks.dart'
 export 'src/installation/installation_id.dart';
 export 'src/pro_notice/pro_notice.dart';
 export 'src/pro_purchase/pro_purchase.dart';
+export 'src/pro_theme/tsu_pro_theme.dart';
+export 'src/pro_theme/tsu_pro_widgets.dart';
 export 'src/pro_renewal/pro_renewal.dart';
 export 'src/sign_in/tsu_sign_in_screen.dart';
 export 'src/sign_in/tsu_xd_approver.dart';
