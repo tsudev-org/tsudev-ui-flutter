@@ -17,6 +17,8 @@
 
 ## Đã hoàn thành (mới nhất trên cùng)
 
+- 26/11/2026 - v0.9.0 SYN1: bỏ Q3 + ProNotice, nguyên văn 7.5/7.6 v2.0.0, quy ước v7.1.0. Còn SYN1: màn "Đồng bộ thiết bị" (chờ tsulink P2-P5).
+
 - 26/11/2026 - v0.8.0 LG3: `TsuSignInReminder` + `SignInReminderPolicy` (AUTH 14.4, phiếu `logs/handover/20261126-LG3_*`).
 
 - 20/11/2026 - v0.2.0: ProRenewal (7.6, 6 ca bắt buộc + golden), `jwsForServer()`/401 stale, DPoP P-256 (RFC

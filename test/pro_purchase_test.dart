@@ -34,7 +34,7 @@ void main() {
     late int terms;
 
     Widget sheet({
-      Set<ProBenefit> benefits = const {ProBenefit.badge, ProBenefit.cloudSync},
+      Set<ProBenefit> benefits = const {ProBenefit.badge, ProBenefit.proTheme},
     }) => ProPurchaseSheet(
       benefits: benefits,
       price: '490.000 ₫',
@@ -80,7 +80,7 @@ void main() {
         final order = [
           y('tsu-pro-positioning'),
           y('tsu-pro-benefit-badge'),
-          y('tsu-pro-benefit-cloudSync'),
+          y('tsu-pro-benefit-proTheme'),
           y('tsu-pro-terms'),
           y('tsu-pro-payment-policy'),
           y('tsu-pro-confirm'),
@@ -90,17 +90,18 @@ void main() {
       },
     );
 
-    testWidgets('chỉ hiện quyền lợi được truyền, theo thứ tự Q1 → Q3', (
+    testWidgets('chỉ hiện quyền lợi được truyền, theo thứ tự Q1 → Q2', (
       tester,
     ) async {
-      await tester.pumpWidget(
-        host(sheet(benefits: {ProBenefit.cloudSync, ProBenefit.badge})),
-      );
+      await tester.pumpWidget(host(sheet(benefits: {ProBenefit.badge})));
       expect(
         find.byKey(const ValueKey('tsu-pro-benefit-proTheme')),
         findsNothing,
       );
       expect(find.text(ProPurchaseStrings.vi.proTheme), findsNothing);
+      await tester.pumpWidget(
+        host(sheet(benefits: {ProBenefit.proTheme, ProBenefit.badge})),
+      );
       expect(
         tester
             .getTopLeft(find.byKey(const ValueKey('tsu-pro-benefit-badge')))
@@ -108,7 +109,7 @@ void main() {
         lessThan(
           tester
               .getTopLeft(
-                find.byKey(const ValueKey('tsu-pro-benefit-cloudSync')),
+                find.byKey(const ValueKey('tsu-pro-benefit-proTheme')),
               )
               .dy,
         ),
@@ -196,7 +197,6 @@ void main() {
           s.positioning,
           s.badge,
           s.proTheme,
-          s.cloudSync,
           s.termsTemplate,
           s.confirm,
           s.buy,

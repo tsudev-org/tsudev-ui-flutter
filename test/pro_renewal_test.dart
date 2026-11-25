@@ -94,12 +94,7 @@ void main() {
       coldStart();
       final d = await c.check(await stateAt(now, proUntil: until));
       expect(d, ProRenewalDecision.expired(proUntil: until));
-      expect(
-        d!.cloudDeleteAt,
-        until.add(const Duration(days: 90)),
-        reason: '{ngày_xoá} = pro_until + 90 ngày',
-      );
-      await c.markShown(d);
+      await c.markShown(d!);
       expect(
         store.snapshot[ProRenewalPolicy.notifiedUntilKey],
         '${secs(until)}',
@@ -280,18 +275,23 @@ void main() {
         startsWith('Your TsuDEV Pro expires in 3 days (on November 27, 2026).'),
       );
       expect(
-        ProRenewalStrings.expiredVi.body(date: '25/02/2027'),
-        endsWith('tải về được tới ngày 25/02/2027.'),
+        ProRenewalStrings.expiredVi.body(),
+        'Tài khoản đã trở về bản miễn phí: huy hiệu và giao diện Pro đã tắt. '
+        'Mọi tính năng và dữ liệu trên thiết bị vẫn giữ nguyên.',
       );
       expect(
-        ProRenewalStrings.expiredVi.body(date: 'x', hasCloudSync: false),
-        'Ứng dụng đã trở về bản miễn phí và ngừng đồng bộ lên đám mây. '
-        'Dữ liệu trên thiết bị vẫn giữ nguyên.',
+        ProRenewalStrings.expiredEn.body(),
+        endsWith('All features and data on your devices stay intact.'),
       );
-      expect(
-        ProRenewalStrings.expiredEn.body(date: 'x', hasCloudSync: false),
-        endsWith('Data on this device stays intact.'),
-      );
+      for (final s in [
+        ProRenewalStrings.reminderVi,
+        ProRenewalStrings.reminderEn,
+        ProRenewalStrings.expiredVi,
+        ProRenewalStrings.expiredEn,
+      ]) {
+        expect(s.bodyTemplate.toLowerCase(), isNot(contains('đám mây')));
+        expect(s.bodyTemplate.toLowerCase(), isNot(contains('cloud')));
+      }
     });
 
     test('ngày: vi DD/MM/YYYY, en theo ngôn ngữ', () {
@@ -403,7 +403,9 @@ void main() {
         await tester.pumpAndSettle();
         expect(find.text('TsuDEV Pro has expired'), findsOneWidget);
         expect(
-          find.textContaining('downloaded until February 24, 2027.'),
+          find.textContaining(
+            'All features and data on your devices stay intact.',
+          ),
           findsOneWidget,
         );
         if (close == 'close') {

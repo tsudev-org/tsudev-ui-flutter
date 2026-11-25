@@ -9,12 +9,11 @@ app-la-ban, lotus-share) dùng đúng một bản:
 | Thành phần | Theo | Việc |
 | --- | --- | --- |
 | `TsuBadge`, `TsuNameWithBadge` | PRODUCT_POLICY 4.2, `assets/badges/` | Huy hiệu Pro / Ủng hộ cạnh tên: 0,75 × dòng (16-20 px), shimmer 7 giây, tim đập khi rê/chạm, tắt khi Giảm chuyển động, nhãn đọc màn hình vi/en |
-| `ProNotice*`, `maybeShowProNotice` | PRODUCT_POLICY 7.3 | Hộp thoại "nhiều thiết bị chưa có Pro": chữ nguyên văn vi/en, chu kỳ 30 ngày ở `tsu.pro_notice.last_shown` |
 | `ProRenewal*`, `maybeShowProRenewal` | PRODUCT_POLICY 7.6 | Nhắc gia hạn 7 ngày cuối (mỗi lần mở app) + báo hết kỳ một lần mỗi `pro_until`: chữ nguyên văn vi/en |
-| `ProPurchaseSheet`, `showProPurchaseSheet`, `ProBenefit` | PRODUCT_POLICY 3.7.3, 7.5 | Màn mua Pro: câu định vị nguyên văn → quyền lợi đang chạy thật (Q1-Q3) → điều khoản 7.5 + liên kết Chính sách thanh toán / Điều khoản → ô xác nhận KHÔNG chọn sẵn; nút mua vô hiệu tới khi đánh dấu; vi/en |
+| `ProPurchaseSheet`, `showProPurchaseSheet`, `ProBenefit` | PRODUCT_POLICY 3.7.3, 7.5 | Màn mua Pro: câu định vị nguyên văn → quyền lợi đang chạy thật (Q1-Q2) → điều khoản 7.5 + liên kết Chính sách thanh toán / Điều khoản → ô xác nhận KHÔNG chọn sẵn; nút mua vô hiệu tới khi đánh dấu; vi/en |
 | `TsuSignInReminder`, `SignInReminderPolicy`, `SignInReminderConditions` | AUTH_AND_ACCOUNT 14.4 (bộ quy ước v7.1.0) | Modal nổi nhắc đăng nhập khi có internet mà chưa đăng nhập: điều kiện R1-R6 do app truyền (tín hiệu mạng của hệ điều hành, không thăm dò), nhịp 1 lần/phiên → 24 giờ → 3 ngày → 7 ngày + hoãn 30 ngày lưu cục bộ, nguyên văn vi/en, đóng bằng X/Esc/Back/chạm ngoài, không ô nhập mật khẩu; `maybeShow` gộp kiểm + hiện + ghi |
 | `TsuProTheme`, `tsuResolveProTheme`, `tsuApplyProTheme`, `TsuProThemePicker`, `TsuProAvatarFrame` | PRODUCT_POLICY 3.7.1 (Q2), DESIGN_SYSTEM 1.3 | Chủ đề Pro: 5 chủ đề sinh từ `.standards/tokens/pro-themes.json` (Hổ phách, Chàm đêm, Rừng thông, Hoa đào, Than chì), gộp vào `ColorScheme` giữ màu chữ/lỗi; tương phản cao và hết Pro ⇒ về mặc định; bộ chọn Cài đặt → Giao diện (chưa Pro vẫn thấy mẫu, chỉ Mặc định chọn được + "Tìm hiểu TsuDEV Pro"); khung ảnh đại diện chuyển sắc |
-| `EntitlementVerifier`, `EntitlementsRepository`, `DiscoveryJwks`, `TsudevEntitlementsApi` | PRODUCT_POLICY 7.4 | Kiểm JWS quyền lợi ES256 bằng JWKS (`iss`, `aud`, `exp`, `typ`, `cnf.jkt`), đệm ≤ 7 ngày, hết hạn ⇒ miễn phí; `jwsForServer()` cho máy chủ đồng bộ (`iat` ≤ 24 giờ, thử lại khi `401 stale`) |
+| `EntitlementVerifier`, `EntitlementsRepository`, `DiscoveryJwks`, `TsudevEntitlementsApi` | PRODUCT_POLICY 7.4 | Kiểm JWS quyền lợi ES256 bằng JWKS (`iss`, `aud`, `exp`, `typ`, `cnf.jkt`), đệm ≤ 7 ngày, hết hạn ⇒ miễn phí; `jwsForServer()` cho máy chủ sản phẩm (`iat` ≤ 24 giờ, thử lại khi `401 stale`) |
 | `DpopSigner`, `DpopKey`, `SoftwareDpopKey` | PRODUCT_POLICY 7.4, RFC 9449/7638 | Bằng chứng DPoP bằng khoá P-256 riêng mỗi cài đặt; thumbprint `cnf.jkt` |
 | `InstallationId` | AUTH_AND_ACCOUNT 14.3 | Mã cài đặt ngẫu nhiên 128 bit, base64url 22 ký tự, header `X-Tsu-Installation` |
 
@@ -61,16 +60,7 @@ final isPro = state.isPro(DateTime.now());           // chỉ để ẩn/hiện 
 // 3. Huy hiệu cạnh tên: tên tự cắt "…", huy hiệu giữ nguyên.
 TsuNameWithBadge(name: user.displayName, badge: state.badge, style: theme.textTheme.titleMedium);
 
-// 4. Ở màn chính sau khi mở app (KHÔNG giữa lúc nhập liệu):
-await maybeShowProNotice(
-  context,
-  controller: ProNoticeController(store: store),
-  state: state,
-  onSeePro: () => isPlayBuild ? startPlayBilling() : launchUrl(proWebUrl('qulythuchi-app')),
-  onBackupToFile: openBackupToFile,
-);
-
-// 5. Nhắc gia hạn / báo hết kỳ (7.6): MỘT controller cho cả tiến trình, nối vòng đời app.
+// 4. Nhắc gia hạn / báo hết kỳ (7.6): MỘT controller cho cả tiến trình, nối vòng đời app.
 final renewal = ProRenewalController(store: store);
 final lifecycle = AppLifecycleListener(onStateChange: renewal.handleAppLifecycleState);
 // Mỗi lần mở app / quay lại (sau khi refresh quyền lợi):
@@ -79,13 +69,12 @@ await maybeShowProRenewal(
   controller: renewal,
   state: state,
   onRenew: () => isPlayBuild ? startPlayBilling('tsudev_pro', 'nam') : launchUrl(proWebUrl('qulythuchi-app')),
-  hasCloudSync: true,                                 // app không có đồng bộ đám mây ⇒ false (bỏ câu cuối)
 );
 
 // 6. Màn mua Pro (3.7.3) - chỉ mở từ Tài khoản/Cài đặt, Giới thiệu, hoặc nút của hộp thoại 7.3/7.6.
 if (await showProPurchaseSheet(
   context,
-  benefits: {ProBenefit.badge, ProBenefit.cloudSync},   // CHỈ quyền lợi đang chạy thật trong app
+  benefits: {ProBenefit.badge, ProBenefit.proTheme},   // CHỈ quyền lợi đang chạy thật trong app
   price: isPlayBuild ? playPrice : '490.000 ₫',          // web: giá đã gồm thuế; Play: giá cửa hàng trả về
   onOpenPaymentPolicy: () => launchUrl(Uri.parse('https://tsudev.com/chinh-sach-thanh-toan')),
   onOpenTerms: () => launchUrl(Uri.parse('https://tsudev.com/terms')),
@@ -94,7 +83,7 @@ if (await showProPurchaseSheet(
 }
 ```
 
-### DPoP và JWS cho máy chủ đồng bộ
+### DPoP và JWS cho máy chủ sản phẩm
 
 ```dart
 // Khoá P-256 của cài đặt này. Tốt nhất: cài DpopKey bằng kho khoá phần cứng (Keystore/Secure Enclave);
@@ -103,18 +92,19 @@ final dpop = DpopSigner(await SoftwareDpopKey.getOrCreate(secureStore));
 final api = TsudevEntitlementsApi(client: client, accessToken: ..., installationId: ..., dpop: dpop);
 final repo = EntitlementsRepository(verifier: ..., store: store, fetchJws: api.fetch, dpop: dpop);
 
-// Gọi TsuDEV Sync / máy chủ sản phẩm nhận JWS làm thẻ: JWS > 23 giờ tự lấy mới; 401 stale ⇒ lấy mới, thử lại 1 lần.
-final url = Uri.parse('https://sync.tsudev.com/v1/list');
+// Gọi máy chủ sản phẩm nhận JWS làm thẻ (TsuDEV Sync đã ngừng từ v7.0.0): JWS > 23 giờ tự lấy mới; 401 stale ⇒ lấy mới, thử lại 1 lần.
+final url = Uri.parse('https://api.<san-pham>.tsudev.com/v1/...');
 final res = await repo.sendWithServerJws(
   (jws) async => client.get(url, headers: await repo.serverAuthHeaders(jws, 'GET', url)),
 );
-if (res == null) { /* chưa có JWS dùng được: hoãn đồng bộ */ }
+if (res == null) { /* chưa có JWS dùng được: hoãn tính năng cần máy chủ */ }
 else if (res.statusCode == 402) { /* pro_required: hiện màn Pro, không thử lại */ }
 ```
 
 - Bản Google Play: `onSeePro` `MUST` mở Play Billing, `MUST NOT` mở trang thanh toán web (PRODUCT_POLICY 4.3).
-- Đăng xuất và xoá dữ liệu cục bộ: `repo.clear()` + `InstallationId.clear(store)`.
-- Khoá lưu cục bộ: `tsu.installation_id`, `tsu.entitlements.jws`, `tsu.entitlements.jwks`, `tsu.pro_notice.last_shown`,
+- Đăng xuất và xoá dữ liệu cục bộ: `repo.clear()` + `InstallationId.clear(store)` + `SignInReminderPolicy.reset()`.
+- Lần chạy đầu của bản dùng `tsudev_ui` ≥ 0.9.0: `removeLegacyLocalKeys(store)` (xoá khoá ProNotice cũ, PRODUCT_POLICY 7.3).
+- Khoá lưu cục bộ: `tsu.installation_id`, `tsu.entitlements.jws`, `tsu.entitlements.jwks`, `tsu.signin_reminder.*` (nhắc đăng nhập),
   `tsu.pro_expired.notified_until` (7.6), `tsu.pro_renewal.seen_pro_until` (nội bộ: thiết bị từng thấy Pro còn hạn);
   kho bí mật: `tsu.dpop.key` (chỉ khi dùng `SoftwareDpopKey`).
 
@@ -197,8 +187,10 @@ Practices: [`docs/best-practices.json`](docs/best-practices.json).
 
 - **Badges** (`TsuBadge`, `TsuNameWithBadge`): Pro / Supporter badges next to a user name, light/dark, reduced-motion
   aware, with screen reader labels in Vietnamese and English.
-- **Pro notices** (`ProNotice*`, `ProRenewal*`): the "several devices without Pro" dialog and the Pro renewal /
-  expiry reminders, with the exact policy texts in Vietnamese and English.
+- **Pro renewal** (`ProRenewal*`): the Pro renewal / expiry reminders, with the exact policy texts in Vietnamese and
+  English.
+- **Sign-in reminder** (`TsuSignInReminder`, `SignInReminderPolicy`): a dismissible prompt to sign in when the device is
+  online and the user is signed out, with anti-nagging cadence stored locally.
 - **Pro purchase sheet** (`ProPurchaseSheet`, `showProPurchaseSheet`): TsuDEV apps are free and projects labelled OPEN
   publish their source code; Pro is an optional plan to support the author. The sheet shows the positioning sentence, the benefits that actually work in
   the app, the 1-year non-renewing terms and an unticked confirmation box that enables the buy button.
@@ -207,7 +199,7 @@ Practices: [`docs/best-practices.json`](docs/best-practices.json).
   contrast always wins; without Pro the app keeps its default colours.
 - **Entitlements** (`EntitlementVerifier`, `EntitlementsRepository`): verifies the ES256-signed entitlement JWS from
   tsudev.com against its JWKS (`iss`, `aud`, `exp`, `typ`, `cnf.jkt`), caches it for at most 7 days and falls back
-  to the free tier on any error; `jwsForServer()` for sync servers.
+  to the free tier on any error; `jwsForServer()` for product servers.
 - **DPoP** (`DpopSigner`, RFC 9449 / RFC 7638) with a per-installation P-256 key, and a random 128-bit
   **installation id**.
 

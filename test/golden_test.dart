@@ -43,12 +43,6 @@ void main() {
     ),
   );
 
-  Widget dialog(Brightness b, Locale l) => MaterialApp(
-    debugShowCheckedModeBanner: false,
-    theme: ThemeData(brightness: b, fontFamily: 'Roboto'),
-    home: Scaffold(body: ProNoticeDialog(devices: 2, locale: l)),
-  );
-
   // Giữa trưa UTC ⇒ ngày theo giờ máy giống nhau ở mọi múi giờ ±11 giờ.
   final until = DateTime.utc(2026, 11, 26, 12);
   final renewals = {
@@ -95,21 +89,5 @@ void main() {
         matchesGoldenFile('goldens/tsu_badge_$name.png'),
       );
     });
-
-    for (final (label, size) in [
-      ('hep', const Size(360, 640)),
-      ('rong', const Size(1024, 640)),
-    ]) {
-      testWidgets('ProNotice - $name - $label', (tester) async {
-        tester.view.physicalSize = size;
-        tester.view.devicePixelRatio = 1;
-        addTearDown(tester.view.reset);
-        await tester.pumpWidget(dialog(b, const Locale('vi')));
-        await expectLater(
-          find.byType(Scaffold),
-          matchesGoldenFile('goldens/pro_notice_${name}_$label.png'),
-        );
-      });
-    }
   }
 }
